@@ -1,37 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    tools:context=".MainActivity"
+    tools:ignore="HardcodedText"
+
+    >
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:background="@color/backGroundColor"
+        >
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/toolbarColor"
+            android:elevation="4dp"
+            />
+        <RelativeLayout
+            android:id="@+id/PremiumBanner"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/noteItemColor"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:visibility="gone"
+
+            >
+
+            <!-- Upgrade to Premium TextView -->
+            <TextView
+                android:id="@+id/upgradeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="10dp"
+                android:text="Upgrade to Premium"
+                android:textSize="16sp"
+
+                android:textColor="@color/TextColor" />
+
+            <!-- Close (Cross) Button -->
+
+
+            <ImageView
+                android:id="@+id/closeButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="onCrossPremiumClick"
+                />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="10dp"
+                android:text="Get Ad-Free experience, Automatic Backup and Restore"
+                android:textSize="11sp"
+
+
+                android:textColor="@color/hintTextColor" />
+
+            <!-- View Premium TextView -->
+            <TextView
+                android:id="@+id/viewPremiumTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="13dp"
+                android:text="View Premium"
+                android:textSize="14sp"
+                android:textColor="#0077CC"
+                android:textStyle="bold"
+                android:onClick="ViewPremiumClick"
+
+                android:clickable="true"
+                android:focusable="true"
+                />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allNotesList"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/adView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/PremiumBanner"
+
+            />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/add_vector"
+            app:fabSize="auto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:onClick="goToAddNote"
+
+            android:visibility="gone"
+            />
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/bannerAdID"
+            android:layout_marginTop="7dp"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints"
+
+            >
+        </com.google.android.gms.ads.AdView>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+
+        app:menu="@menu/navigation_menu"
+        android:background="@color/backGroundColor"
+        app:itemTextColor="@color/TextColor"
         />
 
-
-
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/allNotesList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-
-        />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

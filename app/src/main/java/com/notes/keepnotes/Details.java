@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.ads.AdRequest;
@@ -40,10 +41,17 @@ public class Details extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HandleNightMode();
         setContentView(R.layout.activity_details);
         adManager = new AdManager(this);
         adManager.loadInterstial();
-        adi = adManager.getad();
+        adi = adManager.getad(true);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        mAdView = findViewById(R.id.adView2);
 
         showInterstial();
 
@@ -52,8 +60,8 @@ public class Details extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(Color.parseColor("#000000"));
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+       // toolbar.setBackgroundColor(Color.parseColor("#000000"));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.TextColor));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         detailstext = findViewById(R.id.detailsOfNote);
         builder = new AlertDialog.Builder(this);
@@ -69,25 +77,37 @@ public class Details extends AppCompatActivity {
         detailstext.setTextIsSelectable(true);
 
         //banner add stufss
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-        mAdView = findViewById(R.id.adView2);
-       /* AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
+
+
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        if(adManager.getad(true) !=null ){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    loadBannerAd();
+                }
+            }, 40000); // 60000 milliseconds = 1 minute
+
+        }
+        else{
+
                 loadBannerAd();
-            }
-        }, 20000); // 60000 milliseconds = 1 minute
+        }
+
+
 
 
         //banner stuff end here
 
+    }
+    private void HandleNightMode() {
+        CommonAttributes commonAttributes=new CommonAttributes();
+        if(commonAttributes.getThemeStatus()){
+
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            //  getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
     private void loadBannerAd(){
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -105,7 +125,7 @@ public class Details extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
 
-            goToMain();
+            finish();
             return true;
         }
         if (item.getItemId() == R.id.deleteNote) {
@@ -128,7 +148,7 @@ public class Details extends AppCompatActivity {
 
     public void goToMain() {
         Intent i=new Intent(this,MainActivity.class);
-       // i.putExtra("adDekhabo?",true);
+      //  i.putExtra("adDekhabo?",true);
         startActivity(i);
     }
 
@@ -167,11 +187,18 @@ public class Details extends AppCompatActivity {
     }
     private void showInterstial() {
         if (adi != null) {
+          //  if(AdManager.isFiveMinutesPassed()){
+                adi.show(this);
 
 
-            adi.show(this);
+           // }
+
+
+
         } else {
+            loadBannerAd();
             adManager.loadInterstial();
+
         }
 
     }
@@ -180,11 +207,17 @@ public class Details extends AppCompatActivity {
     public void onBackPressed() {
         goToMain();
     }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadBannerAd();
+        adManager.loadInterstial();
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        loadBannerAd();
+
 
     }
 

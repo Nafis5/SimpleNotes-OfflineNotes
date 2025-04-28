@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/RemoveAdItem"
+        android:title="Remove ads"
+        android:icon="@drawable/baseline_lock_24"
+        android:visible="false"
+
+        />
     <item android:id="@+id/backupId"
-        android:title="Backup"
+        android:title="Auto Backup"
+        android:icon="@drawable/baseline_lock_24"
+        android:visible="false"
+
         />
     <item android:id="@+id/restoreId"
         android:title="Restore"
+        android:icon="@drawable/baseline_lock_24"
+
+        android:visible="false"
         />
+    <item
+        android:id="@+id/nav_dark_theme"
+        android:title="Dark Theme"
+        app:actionLayout="@layout/dark_theme_switch"
+        app:showAsAction="always"
+
+        />
+
 
 </menu>

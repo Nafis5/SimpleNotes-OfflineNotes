@@ -2,6 +2,7 @@ package com.notes.keepnotes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,18 +30,21 @@ public class AdManager {
      static boolean ad3IsLoading=false;
      static boolean ad4IsLoading=false;
     private static int lastAdUnitCallDay = -1;
+    private static long lastAdShownTime = 0;
+    private static final long FIVE_MINUTES_IN_MILLIS = 2 * 60 * 1000; // 5 minutes in milliseconds
 
 
-    private  final String highAdunit1="ca-app-pub-3103198316569371/8832558006";
-    private  final String highAdunit2="ca-app-pub-3103198316569371/7514193162";
-    private  final String highAdunit3="ca-app-pub-3103198316569371/6201111498";
-    private  final String highAdunit4="ca-app-pub-3103198316569371/8307918328";
+
+    private  final String highAdunit1="ca-app-pub-3103198316569371/5239083224";
+    private  final String highAdunit2="ca-app-pub-3103198316569371/1443308440";
+    private  final String highAdunit3="ca-app-pub-3103198316569371/9612522634";
+    private  final String highAdunit4="ca-app-pub-3103198316569371/1108266522";
 
     //below are test ad unitsprivate
    /* private final String highAdunit1="ca-app-pub-3940256099942544/8691691433";
     private  final String highAdunit2="ca-app-pub-3940256099942544/8691691433";
     private  final String highAdunit3="ca-app-pub-3940256099942544/8691691433";
-    private  final String highAdunit4="ca-app-pub-3940256099942544/8691691433";*/
+    private  final String highAdunit4="ca-app-pub-3940256099942544/1033173712";*/
 
 
     static InterstitialAd interstitialAd1;
@@ -61,31 +65,67 @@ public class AdManager {
          if (highInterstitialAd != null) return highInterstitialAd;
          return lowInterstitialAd;
      }*/
-    public static InterstitialAd getad(){
+    public static InterstitialAd getad(boolean isForDetails){
         if(interstitialAd1 !=null) return interstitialAd1;
         else if(interstitialAd2 !=null) return interstitialAd2;
         else if(interstitialAd3 !=null) return interstitialAd3;
-        else return interstitialAd4;
+        else{
+            if( !isFiveMinutesPassed() || isForDetails ) return null;
+        //    if( !isFiveMinutesPassed()  ) return null;
+            else return interstitialAd4;
+        }
 
+
+
+
+    }
+
+
+    private static void updatelastAdShownTime() {
+        lastAdShownTime = System.currentTimeMillis();
+    }
+    public static boolean isFiveMinutesPassed() {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - lastAdShownTime;
+
+        // Check if 5 minutes have passed since the last method call
+        boolean isFiveMinutesPassed = elapsedTime >= FIVE_MINUTES_IN_MILLIS;
+
+        if (isFiveMinutesPassed) {
+            Log.d("TimeManager", "Five minutes have passed since the last method call.");
+        }
+
+        return isFiveMinutesPassed;
     }
 
 
     public void loadInterstial() {
         //   if(highInterstitialAd==null) loadAdHigh();
         // if(lowInterstitialAd==null) loadAdLow();
-      //  setYesterday(); //remove this line
-        setAdsNullIfExpired();
+        //  setYesterday(); //remove this line
+         setAdsNullIfExpired();
+        loadAds1(highAdunit1);
         if(  isAllHighAdsNull()  & adShowPermission  ) {
 
-            loadAds1(highAdunit1);
+
             loadAds2(highAdunit2);
             loadAds3(highAdunit3);
-            if(highAdunit4==null) loadAds4(highAdunit4);
+            if (interstitialAd4==null){
+                Log.d("adsPrint", "low ecpm load hoite disi");
+                loadAds4(highAdunit4);
+            }
             Calendar calendar = Calendar.getInstance();
             lastAdUnitCallDay=calendar.get(Calendar.DAY_OF_YEAR);
 
 
         }
+
+    }
+
+
+
+
+
         /*else{
            String msg="";
             if(isAllHighAdsNull()) msg=msg+"all null: ";
@@ -96,7 +136,7 @@ public class AdManager {
 
 
 
-    }
+
     void setAdsNullIfExpired(){
         Calendar calendar = Calendar.getInstance();
         int currentDay = calendar.get(Calendar.DAY_OF_YEAR);
@@ -203,6 +243,11 @@ public class AdManager {
 
 
                         }
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            updatelastAdShownTime();
+                        }
                     });
                 }
             });
@@ -247,6 +292,11 @@ public class AdManager {
 
 
                         }
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            updatelastAdShownTime();
+                        }
                     });
                 }
             });
@@ -287,6 +337,11 @@ public class AdManager {
                             interstitialAd3 = null;
 
 
+                        }
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            updatelastAdShownTime();
                         }
                     });
                 }
@@ -330,6 +385,11 @@ public class AdManager {
                             interstitialAd4 = null;
 
 
+                        }
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            updatelastAdShownTime();
                         }
                     });
                 }

@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.ads.AdRequest;
@@ -44,7 +46,9 @@ public class addNote extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HandleNightMode();
         setContentView(R.layout.activity_add_note);
+
 
         admanager=new AdManager(this);
 
@@ -53,10 +57,10 @@ public class addNote extends AppCompatActivity {
         setSupportActionBar(toolbar);
         noteTitle=findViewById(R.id.noteTitle);
         noteDetails=findViewById(R.id.noteDetails);
-        toolbar.setBackgroundColor(Color.parseColor("#000000"));
-        getSupportActionBar().setTitle("New Note");
+       // toolbar.setBackgroundColor(Color.parseColor("#000000"));
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+      //  toolbar.setTitleTextColor(Color.parseColor("#000000"));
         //banner add stufss
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
@@ -94,8 +98,18 @@ public class addNote extends AppCompatActivity {
         todaysDate=c.get(Calendar.DAY_OF_MONTH) + "/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR);
 
          Log.d("calender","Date and Time"+todaysDate+"and"+currentTime);
+        noteTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP,TextSizeUtil.getEditTextSizeBasedOnScreen(this));
+        noteDetails.setTextSize(TypedValue.COMPLEX_UNIT_SP,TextSizeUtil.getEditTextSizeBasedOnScreen(this));
 
 
+    }
+    private void HandleNightMode() {
+        CommonAttributes commonAttributes=new CommonAttributes();
+        if(commonAttributes.getThemeStatus()){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+           // getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     private String pad(int i){
@@ -159,9 +173,15 @@ public class addNote extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAdView.loadAd(adRequest);
+
         admanager.loadInterstial();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mAdView.loadAd(adRequest);
+        admanager.loadInterstial();
 
+    }
 }

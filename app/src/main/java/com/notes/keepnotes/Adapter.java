@@ -32,6 +32,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view=layoutInflater.inflate(R.layout.custom_list_view,parent,false);
 
+
+        if(TextSizeUtil.getScreenSize(mainActivity)>7.0){
+            view=layoutInflater.inflate(R.layout.custom_list_view_large,parent,false);
+        }
+
+
+
+
         return new ViewHolder(view,mainActivity);
     }
 
@@ -88,7 +96,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
 
 
-                        Intent i = new Intent(v.getContext(), Edit.class);
+                        Intent i = new Intent(v.getContext(), Details.class);
                         i.putExtra("ID", notes.get(getAdapterPosition()).getId());
                         v.getContext().startActivity(i);
                     }
