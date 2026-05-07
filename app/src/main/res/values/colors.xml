@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1A1A1A</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#448AFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="toolbarColor">#FFFFFF</color>
+    <color name="backGroundColor">#FFFFFF</color>
+    <color name="TextColor">#1A1A1A</color>
+    <color name="noteItemColor">#FAFAFA</color>
+    <color name="buttonColor">#1A1A1A</color>
+    <color name="hintTextColor">#888888</color>
+    <color name="fabColor">#448AFF</color>
+    <color name="dividerColor">#E0E0E0</color>
+    <color name="bottomBarColor">#FFFFFF</color>
+    <color name="contentPreviewColor">#666666</color>
+    <color name="dateColor">#999999</color>
+    <color name="actionTextColor">#448AFF</color>
+    <color name="editorToolbarColor">#F5F5F5</color>
+    <color name="selectionHighlight">#E3F2FD</color>
+</resources>

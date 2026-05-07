@@ -1,0 +1,7 @@
+runtime: python311
+entrypoint: gunicorn -b :$PORT main:app
+
+# flexible environment is also an option if standard doesn't meet needs, 
+# but standard is cheaper and faster for this simple script.
+# runtime_config:
+#   python_version: 3

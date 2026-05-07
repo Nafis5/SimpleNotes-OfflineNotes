@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:fitsSystemWindows="true"
+    android:background="#0E1116">
+
+    <ImageView
+        android:id="@+id/appIcon"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@drawable/note_icon_3"
+        android:contentDescription="@string/app_name" />
+
+    <TextView
+        android:id="@+id/onboardingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Note Pro"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:paddingTop="24dp" />
+
+    <TextView
+        android:id="@+id/restoreStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Checking your premium status..."
+        android:textColor="#C9D1D9"
+        android:paddingTop="12dp"
+        android:gravity="center"
+        android:textAlignment="center" />
+
+    <ProgressBar
+        android:id="@+id/restoreProgress"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/continueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        android:enabled="false"
+        android:alpha="0.6"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"
+        android:backgroundTint="#1F6FEB"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

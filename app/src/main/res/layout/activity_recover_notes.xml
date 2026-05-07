@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    android:fitsSystemWindows="true"
+    android:background="@color/backGroundColor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="4dp"
+        android:paddingEnd="16dp"
+        android:background="@color/toolbarColor">
+
+        <ImageButton
+            android:id="@+id/btnRecoverBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Recover Deleted Notes"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/TextColor"
+            android:layout_marginStart="8dp" />
+
+        <TextView
+            android:id="@+id/btnSelectAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select All"
+            android:textColor="@color/actionTextColor"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/trashInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notes are automatically deleted after 30 days"
+        android:textSize="12sp"
+        android:textColor="@color/hintTextColor"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:background="@color/editorToolbarColor" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/deletedNotesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="4dp" />
+
+    <TextView
+        android:id="@+id/emptyTrashText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="No deleted notes in the past 30 days"
+        android:gravity="center"
+        android:textColor="@color/hintTextColor"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/recoverActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@color/toolbarColor"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btnRecoverSelected"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:text="Recover"
+            android:backgroundTint="@color/actionTextColor"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btnDeleteForeverSelected"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:text="Delete Forever"
+            android:backgroundTint="#D32F2F"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

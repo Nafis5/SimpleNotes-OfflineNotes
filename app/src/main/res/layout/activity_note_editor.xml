@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/backGroundColor"
+    tools:context=".NoteEditorActivity">
+
+    <!-- Top bar -->
+    <LinearLayout
+        android:id="@+id/editorTopBar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="@color/backGroundColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/done"
+            android:textColor="@color/actionTextColor"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/btnInfo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_info_outline"
+            android:contentDescription="Info"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            app:tint="@color/hintTextColor" />
+
+        <ImageButton
+            android:id="@+id/btnEditorMore"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_more_horiz"
+            android:contentDescription="More options"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            app:tint="@color/TextColor" />
+
+    </LinearLayout>
+
+    <!-- Divider under top bar -->
+    <View
+        android:id="@+id/editorTopDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/dividerColor"
+        app:layout_constraintTop_toBottomOf="@id/editorTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Scrollable content area -->
+    <ScrollView
+        android:id="@+id/editorScrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/editorTopDivider"
+        app:layout_constraintBottom_toTopOf="@id/editorBottomDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Title input -->
+            <EditText
+                android:id="@+id/editTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/note_title_hint"
+                android:textColorHint="@color/hintTextColor"
+                android:textColor="@color/TextColor"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:background="@android:color/transparent"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:inputType="textCapSentences"
+                android:maxLines="2"
+                android:importantForAutofill="no" />
+
+            <!-- Content input -->
+            <EditText
+                android:id="@+id/editContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/note_content_hint"
+                android:textColorHint="@color/hintTextColor"
+                android:textColor="@color/TextColor"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="4dp"
+                android:gravity="top|start"
+                android:minHeight="150dp"
+                android:inputType="textMultiLine|textCapSentences"
+                android:importantForAutofill="no" />
+
+            <!-- Checklist container -->
+            <LinearLayout
+                android:id="@+id/checklistContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp" />
+
+            <!-- Content below checklist -->
+            <EditText
+                android:id="@+id/editContentBelow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Continue writing..."
+                android:textColorHint="@color/hintTextColor"
+                android:textColor="@color/TextColor"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="4dp"
+                android:gravity="top|start"
+                android:minHeight="100dp"
+                android:inputType="textMultiLine|textCapSentences"
+                android:visibility="gone"
+                android:importantForAutofill="no" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Divider above bottom toolbar -->
+    <View
+        android:id="@+id/editorBottomDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/dividerColor"
+        app:layout_constraintBottom_toTopOf="@id/editorBottomToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Bottom formatting toolbar -->
+    <LinearLayout
+        android:id="@+id/editorBottomToolbar"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:background="@color/editorToolbarColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnCopyContent"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_content_copy"
+            android:contentDescription="Copy content"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            app:tint="@color/hintTextColor" />
+
+        <TextView
+            android:id="@+id/btnBold"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="B"
+            android:textColor="@color/hintTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <TextView
+            android:id="@+id/btnItalic"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="I"
+            android:textColor="@color/hintTextColor"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <ImageButton
+            android:id="@+id/btnToolbarCheckbox"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_checkbox_outline"
+            android:contentDescription="Checkbox"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:tint="@color/hintTextColor" />
+
+        <ImageButton
+            android:id="@+id/btnToolbarBullet"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_bullet_list"
+            android:contentDescription="Bullet list"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:tint="@color/hintTextColor" />
+
+        <ImageButton
+            android:id="@+id/btnToolbarMic"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_mic"
+            android:contentDescription="Speech to text"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            app:tint="@color/hintTextColor" />
+
+        <TextView
+            android:id="@+id/btnToolbarHeading"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="H"
+            android:textColor="@color/hintTextColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <ImageButton
+            android:id="@+id/btnToolbarUndo"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_undo"
+            android:contentDescription="@string/undo"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            app:tint="@color/hintTextColor" />
+
+        <ImageButton
+            android:id="@+id/btnToolbarDismiss"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_keyboard_hide"
+            android:contentDescription="Dismiss keyboard"
+            android:scaleType="centerInside"
+            android:padding="8dp"
+            app:tint="@color/actionTextColor" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

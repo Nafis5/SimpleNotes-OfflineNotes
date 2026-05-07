@@ -1,0 +1,323 @@
+{
+  "project_info": {
+    "project_number": "606014311584",
+    "project_id": "simple-notes-90009",
+    "storage_bucket": "simple-notes-90009.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:ac0f3af74904fb7a1a8dc5",
+        "android_client_info": {
+          "package_name": "com.dailydairy.simpledairy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:21e8182273c7a83c1a8dc5",
+        "android_client_info": {
+          "package_name": "com.deaftech.quick.notes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:beb05e9169f65ade1a8dc5",
+        "android_client_info": {
+          "package_name": "com.deaftech.simpledairy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:d2f39b5dc8c9afee1a8dc5",
+        "android_client_info": {
+          "package_name": "com.deaftech.todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:e351f57f17c0394f1a8dc5",
+        "android_client_info": {
+          "package_name": "com.notes.deaftech.goodnotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:f6be4e58f337c27d1a8dc5",
+        "android_client_info": {
+          "package_name": "com.notes.jnotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:9b6dd8f04d91ad621a8dc5",
+        "android_client_info": {
+          "package_name": "com.notes.keepnotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:e3180e84e0d3a2251a8dc5",
+        "android_client_info": {
+          "package_name": "com.notes.securednotepad"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:499596a9bb8857bb1a8dc5",
+        "android_client_info": {
+          "package_name": "com.pro.keepnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "606014311584-huie4sh6kl20816rpdplor34efigojkj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pro.keepnotes",
+            "certificate_hash": "56e515dbee57233a24a3065d62bc08aa514a52ba"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:237b39d9113899881a8dc5",
+        "android_client_info": {
+          "package_name": "com.soltralabs.calculator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:a7d5e243acd0f8611a8dc5",
+        "android_client_info": {
+          "package_name": "com.soltralabs.expensetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:c6a3b92fa6c9fb5c1a8dc5",
+        "android_client_info": {
+          "package_name": "com.soltralabs.expensetracker.pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:af1c529e424f7c9d1a8dc5",
+        "android_client_info": {
+          "package_name": "com.soltralabs.medicinereminder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:6f794cb7f008abdc1a8dc5",
+        "android_client_info": {
+          "package_name": "com.soltralabs.stopwactch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:56238928dc3196091a8dc5",
+        "android_client_info": {
+          "package_name": "com.soltralabs.workoutlog.gymworkouttracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:606014311584:android:db4148dc3ec3b7661a8dc5",
+        "android_client_info": {
+          "package_name": "com.soltralabs.workoutlog.gymworkouttracker.pro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG5QPDH8ah5UYf0CzW0ETzgZUInylMRdY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,16 @@
+Samsung store
+1.write samsung permission-done
+2.change admob id-done
+3.change banner id-done
+4.place the interstial adunits-done
+5.upgrade app version and version name-done
+6.build apk with key
+
+
+<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
+play store
+2.admob id change-done
+3.banner id change-done
+4.place real interstial adunits-done
+5.upgrade app version-done
+6.build apk-done

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/heading_none" android:title="Normal" />
+    <item android:id="@+id/heading_h1" android:title="Heading 1" />
+    <item android:id="@+id/heading_h2" android:title="Heading 2" />
+    <item android:id="@+id/heading_h3" android:title="Heading 3" />
+    <item android:id="@+id/heading_h4" android:title="Heading 4" />
+    <item android:id="@+id/heading_h5" android:title="Heading 5" />
+    <item android:id="@+id/heading_h6" android:title="Heading 6" />
+</menu>

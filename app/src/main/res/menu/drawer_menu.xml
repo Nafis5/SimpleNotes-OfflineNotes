@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_themes"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/themes" />
+
+    <item
+        android:id="@+id/nav_app_lock"
+        android:icon="@drawable/baseline_lock_24"
+        android:title="App Lock"
+        app:actionLayout="@layout/nav_action_switch_lock"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+    <item
+        android:id="@+id/nav_auto_backup"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:title="Automatic Backup"
+        app:actionLayout="@layout/nav_action_switch"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+    <item
+        android:id="@+id/nav_restore"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="Restore" />
+
+    <item
+        android:id="@+id/nav_recover_deleted"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="Recover Deleted Notes (Premium)" />
+
+</menu>

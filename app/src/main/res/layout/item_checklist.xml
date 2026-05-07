@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="8dp"
+    android:paddingEnd="4dp">
+
+    <CheckBox
+        android:id="@+id/checklistCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/hintTextColor" />
+
+    <EditText
+        android:id="@+id/checklistText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:hint="List item"
+        android:textColorHint="@color/hintTextColor"
+        android:textColor="@color/TextColor"
+        android:textSize="15sp"
+        android:inputType="textCapSentences"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        android:importantForAutofill="no"
+        android:padding="4dp" />
+
+    <ImageButton
+        android:id="@+id/checklistDelete"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/vector_close_24"
+        android:contentDescription="Remove item"
+        android:scaleType="centerInside"
+        android:padding="8dp"
+        app:tint="@color/hintTextColor"
+        xmlns:app="http://schemas.android.com/apk/res-auto" />
+
+</LinearLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_export_text"
+        android:title="@string/export_text" />
+
+    <item
+        android:id="@+id/menu_export_markdown"
+        android:title="Export to Markdown" />
+
+    <item
+        android:id="@+id/menu_export_html"
+        android:title="Export to HTML" />
+
+    <item
+        android:id="@+id/menu_export_pdf"
+        android:title="Export to PDF" />
+
+    <item
+        android:id="@+id/menu_delete_note"
+        android:title="@string/delete_note" />
+
+</menu>
