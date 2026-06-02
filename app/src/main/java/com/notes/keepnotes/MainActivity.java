@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.OnNot
 
         // FAB - launch editor for new note
         fab.setOnClickListener(v -> {
-            if (!CheckPremiumStatus.isPremium && notes.size() >= 3) {
+            if (!CheckPremiumStatus.isPremium && notes.size() >= 10) {
                 showUpgradeDialogAddNotes();
                 return;
             }

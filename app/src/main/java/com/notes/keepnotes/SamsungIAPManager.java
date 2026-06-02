@@ -24,7 +24,7 @@ public class SamsungIAPManager {
 
     // TODO: Replace with your actual Item IDs from Samsung Seller Portal
     public static final String ITEM_ID_MONTHLY = "sub_monthly";
-    public static final String ITEM_ID_YEARLY = "sub_yearly_trial";
+    public static final String ITEM_ID_YEARLY = "sub_yearly";
 
     // Operation Mode: Use IapHelper.IAP_MODE_TEST for development, IapHelper.IAP_MODE_PRODUCTION for release
     //private static final int OPERATION_MODE = IapHelper.IAP_MODE_TEST;

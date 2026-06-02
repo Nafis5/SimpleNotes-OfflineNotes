@@ -139,13 +139,6 @@ public class SubscriptionActivity2 extends AppCompatActivity {
         monthlyPriceText = createPriceText("$5");
 
         yearlyCard = createPlanCard("Yearly", "Best value • Save 50%", yearlyPriceText, "2.5 USD/month");
-        TextView trialBadge = new TextView(this);
-        trialBadge.setText("🎁 14-day free trial");
-        trialBadge.setTextColor(Color.parseColor("#4CAF50"));
-        trialBadge.setTextSize(13f);
-        trialBadge.setTypeface(Typeface.DEFAULT_BOLD);
-        trialBadge.setPadding(0, 4, 0, 0);
-        yearlyCard.addView(trialBadge, 1);
         yearlyCard.setOnClickListener(v -> selectPlan(SamsungIAPManager.ITEM_ID_YEARLY));
         plansContainer.addView(yearlyCard);
 
@@ -476,11 +469,6 @@ public class SubscriptionActivity2 extends AppCompatActivity {
         boolean enabled = selectedPlanId != null;
         continueButton.setEnabled(enabled);
         continueButton.setAlpha(enabled ? 1f : 0.6f);
-        if (SamsungIAPManager.ITEM_ID_YEARLY.equals(selectedPlanId)) {
-            continueButton.setText("Try For Free");
-        } else {
-            continueButton.setText("Continue");
-        }
     }
 
     private GradientDrawable createRoundedBackground(String colorHex, int radius, boolean solid) {
