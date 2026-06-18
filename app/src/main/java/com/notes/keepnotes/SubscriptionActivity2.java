@@ -104,7 +104,7 @@ public class SubscriptionActivity2 extends AppCompatActivity {
         layout.addView(title);
 
         TextView subtitle = new TextView(this);
-        subtitle.setText("Get unlimited access to all features.");
+        subtitle.setText("You're not paying for a note app—you're paying for the security and convenience of your data.");
         subtitle.setTextColor(Color.parseColor("#C9D1D9"));
         subtitle.setGravity(Gravity.CENTER_HORIZONTAL);
         subtitle.setPadding(0, 0, 0, 32);
@@ -116,17 +116,10 @@ public class SubscriptionActivity2 extends AppCompatActivity {
         benefitsCard.setBackground(createRoundedBackground("#161B22", 32, false));
         benefitsCard.setGravity(Gravity.START);
 
-        TextView benefitsTitle = new TextView(this);
-        benefitsTitle.setText("Included in Premium");
-        benefitsTitle.setTextColor(Color.WHITE);
-        benefitsTitle.setTypeface(Typeface.DEFAULT_BOLD);
-        benefitsTitle.setTextSize(16f);
-        benefitsCard.addView(benefitsTitle);
-
-      //  addBenefitRow(benefitsCard, "Data Backup & Restore", "Keep your notes safe in the cloud.");
+        addBenefitRow(benefitsCard, "Data Backup & Restore", "Keep your notes safe in the cloud.");
         addBenefitRow(benefitsCard, "Export Notes", "Export notes as pdf, markdown, html");
         addBenefitRow(benefitsCard, "App Locking", "Protect your notes with biometric security.");
-        addBenefitRow(benefitsCard, "Voice Typing", "Type notes with voice commands.");
+        addBenefitRow(benefitsCard, "Voice Typing & Premium Fonts", "Use speech to text and beautiful fonts");
 
         layout.addView(benefitsCard);
 
@@ -190,6 +183,35 @@ public class SubscriptionActivity2 extends AppCompatActivity {
         restoreLink.setOnClickListener(v -> triggerRestoreFromPaywall());
         layout.addView(restoreLink);
 
+        TextView securePaymentText = new TextView(this);
+        securePaymentText.setText("\uD83D\uDD12  Secure payment by Galaxy Store");
+        securePaymentText.setTextColor(Color.parseColor("#AAAAAA"));
+        securePaymentText.setTextSize(12);
+        securePaymentText.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayout.LayoutParams secureParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        secureParams.gravity = Gravity.CENTER_HORIZONTAL;
+        secureParams.topMargin = 32;
+        securePaymentText.setLayoutParams(secureParams);
+        layout.addView(securePaymentText);
+
+        TextView cancelAnytimeText = new TextView(this);
+        cancelAnytimeText.setText("Cancel anytime in the Galaxy Store app");
+        cancelAnytimeText.setTextColor(Color.parseColor("#AAAAAA"));
+        cancelAnytimeText.setTextSize(12);
+        cancelAnytimeText.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayout.LayoutParams cancelParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        cancelParams.gravity = Gravity.CENTER_HORIZONTAL;
+        cancelParams.topMargin = 6;
+        cancelParams.bottomMargin = 24;
+        cancelAnytimeText.setLayoutParams(cancelParams);
+        layout.addView(cancelAnytimeText);
+
         scrollView.addView(layout);
         setContentView(scrollView);
 
@@ -197,6 +219,9 @@ public class SubscriptionActivity2 extends AppCompatActivity {
         iapManager = SamsungIAPManager.getInstance(this);
 
         fetchProductPrices();
+
+        // Pre-select yearly plan by default
+        selectPlan(SamsungIAPManager.ITEM_ID_YEARLY);
     }
 
     private void initiatePurchase(String itemId) {

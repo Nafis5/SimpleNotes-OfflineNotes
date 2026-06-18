@@ -2,7 +2,9 @@ package com.notes.keepnotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.Manifest;
 import android.net.Uri;
@@ -12,8 +14,17 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,11 +42,17 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.appcompat.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.tom_roush.pdfbox.android.PDFBoxResourceLoader;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -83,6 +100,16 @@ public class NoteEditorActivity extends AppCompatActivity {
     private static final String CHECKLIST_SEPARATOR = "\n<!--CHECKLIST-->\n";
     private static final String BELOW_SEPARATOR = "\n<!--BELOW-->\n";
 
+    private static final String FONT_MARKER_PREFIX = "<!--FONT:";
+    private static final String FONT_MARKER_SUFFIX = "-->";
+    private String selectedFontKey = "default";
+
+    // Font keys (resource names). "default" = system font, "inter" is free, the rest are premium.
+    private static final String[] FONT_KEYS = {
+            "default", "inter", "caveat", "lora", "merriweather",
+            "nunito", "patrick_hand", "quicksand", "source_code_pro"
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +128,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         ImageButton btnInfo = findViewById(R.id.btnInfo);
         ImageButton btnEditorMore = findViewById(R.id.btnEditorMore);
         ImageButton btnCopyContent = findViewById(R.id.btnCopyContent);
+        TextView btnToolbarFont = findViewById(R.id.btnToolbarFont);
 
         // Formatting buttons
         btnBold = findViewById(R.id.btnBold);
@@ -137,6 +165,9 @@ public class NoteEditorActivity extends AppCompatActivity {
                 Toast.makeText(this, "Nothing to copy", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Font button - opens the font picker bottom sheet
+        btnToolbarFont.setOnClickListener(v -> showFontPicker());
 
         // Info button
         btnInfo.setOnClickListener(v ->
@@ -243,9 +274,13 @@ public class NoteEditorActivity extends AppCompatActivity {
         });
 
         // Heading button - shows popup to pick H1-H6 or Normal
-        btnToolbarHeading.setOnClickListener(v -> showHeadingMenu(v));
+        btnToolbarHeading.setOnClickListener(v -> {
+            showHeadingMenu(v);
+        });
         // Undo button
-        btnToolbarUndo.setOnClickListener(v -> editContent.onTextContextMenuItem(android.R.id.undo));
+        btnToolbarUndo.setOnClickListener(v -> {
+            editContent.onTextContextMenuItem(android.R.id.undo);
+        });
 
         // Dismiss keyboard button
         btnToolbarDismiss.setOnClickListener(v -> {
@@ -262,6 +297,16 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (note != null) {
             editTitle.setText(note.getTitle());
             String fullContent = note.getContent();
+            // Extract and strip the leading font marker if present
+            String fontKey = "default";
+            if (fullContent != null && fullContent.startsWith(FONT_MARKER_PREFIX)) {
+                int end = fullContent.indexOf(FONT_MARKER_SUFFIX);
+                if (end > FONT_MARKER_PREFIX.length()) {
+                    fontKey = fullContent.substring(FONT_MARKER_PREFIX.length(), end);
+                    fullContent = fullContent.substring(end + FONT_MARKER_SUFFIX.length());
+                }
+            }
+            applyFont(fontKey);
             if (fullContent != null && !fullContent.isEmpty()) {
                 String htmlContent;
                 String checklistData = null;
@@ -327,6 +372,11 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (!hasText && !hasChecklist) {
             finish();
             return;
+        }
+
+        // Persist selected font as a leading marker
+        if (!"default".equals(selectedFontKey)) {
+            content = FONT_MARKER_PREFIX + selectedFontKey + FONT_MARKER_SUFFIX + content;
         }
 
         Calendar c = Calendar.getInstance();
@@ -796,6 +846,13 @@ public class NoteEditorActivity extends AppCompatActivity {
     private void showEditorOverflowMenu(View anchor) {
         PopupMenu popup = new PopupMenu(this, anchor);
         popup.getMenuInflater().inflate(R.menu.editor_overflow_menu, popup.getMenu());
+        if (!CheckPremiumStatus.isPremium) {
+            int[] premiumIds = {R.id.menu_export_pdf, R.id.menu_export_html, R.id.menu_export_markdown};
+            for (int id : premiumIds) {
+                MenuItem mi = popup.getMenu().findItem(id);
+                if (mi != null) mi.setTitle(buildPremiumTitle(mi.getTitle().toString()));
+            }
+        }
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.menu_delete_note) {
@@ -825,6 +882,194 @@ public class NoteEditorActivity extends AppCompatActivity {
             return true;
         });
         popup.show();
+    }
+
+    private CharSequence buildPremiumTitle(String title) {
+        Drawable crown = ContextCompat.getDrawable(this, R.drawable.ic_crown);
+        if (crown == null) return title;
+        int size = (int) (getResources().getDisplayMetrics().density * 16);
+        crown.setBounds(0, 0, size, size);
+        String full = title + "  \u00A0";
+        SpannableString ss = new SpannableString(full);
+        ss.setSpan(new ImageSpan(crown, ImageSpan.ALIGN_BASELINE),
+                full.length() - 1, full.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ss;
+    }
+
+    // ---------------- Font picker ----------------
+
+    private boolean isFontFree(String key) {
+        return "default".equals(key) || "inter".equals(key);
+    }
+
+    private int getFontResId(String key) {
+        switch (key) {
+            case "inter": return R.font.inter;
+            case "caveat": return R.font.caveat;
+            case "lora": return R.font.lora;
+            case "merriweather": return R.font.merriweather;
+            case "nunito": return R.font.nunito;
+            case "patrick_hand": return R.font.patrick_hand;
+            case "quicksand": return R.font.quicksand;
+            case "source_code_pro": return R.font.source_code_pro;
+            default: return 0;
+        }
+    }
+
+    private Typeface getTypefaceForKey(String key) {
+        int resId = getFontResId(key);
+        if (resId == 0) return Typeface.DEFAULT;
+        try {
+            return ResourcesCompat.getFont(this, resId);
+        } catch (Exception e) {
+            return Typeface.DEFAULT;
+        }
+    }
+
+    private void applyFont(String key) {
+        selectedFontKey = key;
+        Typeface tf = getTypefaceForKey(key);
+        editContent.setTypeface(tf);
+        editContentBelow.setTypeface(tf);
+        editTitle.setTypeface(tf, Typeface.BOLD);
+    }
+
+    private int dpToPx(int dp) {
+        return (int) (getResources().getDisplayMetrics().density * dp);
+    }
+
+    private int resolveThemeColor(int attr) {
+        TypedValue tv = new TypedValue();
+        getTheme().resolveAttribute(attr, tv, true);
+        return tv.data;
+    }
+
+    private void showFontPicker() {
+        BottomSheetDialog dialog = new BottomSheetDialog(this);
+
+        int textColor = editContent.getCurrentTextColor();
+
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
+        root.setBackgroundColor(resolveThemeColor(android.R.attr.colorBackground));
+        root.setPadding(dpToPx(16), dpToPx(12), dpToPx(16), dpToPx(16));
+
+        // Header: close (start), "Font" title (center), check (end)
+        FrameLayout header = new FrameLayout(this);
+        header.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        ImageButton close = new ImageButton(this);
+        close.setBackground(null);
+        close.setImageResource(R.drawable.vector_close_24);
+        close.setColorFilter(textColor);
+        close.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.START | Gravity.CENTER_VERTICAL));
+        close.setOnClickListener(v -> dialog.dismiss());
+        header.addView(close);
+
+        TextView headerTitle = new TextView(this);
+        headerTitle.setText("Font");
+        headerTitle.setTextColor(textColor);
+        headerTitle.setTextSize(18f);
+        headerTitle.setTypeface(Typeface.DEFAULT_BOLD);
+        headerTitle.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER));
+        header.addView(headerTitle);
+
+        ImageButton check = new ImageButton(this);
+        check.setBackground(null);
+        check.setImageResource(R.drawable.ic_check_white_24dp);
+        check.setColorFilter(getResources().getColor(R.color.actionTextColor));
+        check.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        check.setPadding(0, 0, 0, 0);
+        FrameLayout.LayoutParams checkLp = new FrameLayout.LayoutParams(
+                dpToPx(30), dpToPx(30), Gravity.END | Gravity.CENTER_VERTICAL);
+        check.setLayoutParams(checkLp);
+        check.setOnClickListener(v -> dialog.dismiss());
+        header.addView(check);
+
+        root.addView(header);
+
+        // Grid of font cards (3 columns)
+        ScrollView scroll = new ScrollView(this);
+        LinearLayout.LayoutParams scrollLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        scroll.setLayoutParams(scrollLp);
+
+        GridLayout grid = new GridLayout(this);
+        grid.setColumnCount(3);
+        grid.setPadding(0, dpToPx(12), 0, 0);
+
+        int columns = 3;
+        int cellMargin = dpToPx(6);
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int cellWidth = (screenWidth - dpToPx(32) - cellMargin * 2 * columns) / columns;
+
+        for (String key : FONT_KEYS) {
+            View card = buildFontCard(key, textColor, dialog);
+            GridLayout.LayoutParams glp = new GridLayout.LayoutParams();
+            glp.width = cellWidth;
+            glp.height = dpToPx(64);
+            glp.setMargins(cellMargin, cellMargin, cellMargin, cellMargin);
+            card.setLayoutParams(glp);
+            grid.addView(card);
+        }
+
+        scroll.addView(grid);
+        root.addView(scroll);
+
+        dialog.setContentView(root);
+        dialog.show();
+    }
+
+    private View buildFontCard(String key, int textColor, BottomSheetDialog dialog) {
+        FrameLayout card = new FrameLayout(this);
+        boolean selected = key.equals(selectedFontKey);
+        boolean locked = !isFontFree(key) && !CheckPremiumStatus.isPremium;
+
+        GradientDrawable bg = new GradientDrawable();
+        bg.setCornerRadius(dpToPx(12));
+        bg.setColor(Color.parseColor("#22808080"));
+        if (selected) {
+            bg.setStroke(dpToPx(2), getResources().getColor(R.color.actionTextColor));
+        }
+        card.setBackground(bg);
+
+        TextView preview = new TextView(this);
+        preview.setText("SimpleNotes");
+        preview.setTextColor(textColor);
+        preview.setTextSize(16f);
+        preview.setGravity(Gravity.CENTER);
+        preview.setMaxLines(1);
+        preview.setTypeface(getTypefaceForKey(key));
+        preview.setLayoutParams(new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        card.addView(preview);
+
+        if (locked) {
+            preview.setAlpha(0.45f);
+            ImageView crown = new ImageView(this);
+            crown.setImageResource(R.drawable.ic_crown);
+            FrameLayout.LayoutParams crownLp = new FrameLayout.LayoutParams(
+                    dpToPx(16), dpToPx(16), Gravity.END | Gravity.TOP);
+            crownLp.setMargins(0, dpToPx(6), dpToPx(6), 0);
+            crown.setLayoutParams(crownLp);
+            card.addView(crown);
+        }
+
+        card.setOnClickListener(v -> {
+            if (!isFontFree(key) && !CheckPremiumStatus.isPremium) {
+                showUpgradeDialog();
+                return;
+            }
+            applyFont(key);
+            dialog.dismiss();
+        });
+
+        return card;
     }
 
     private void showUpgradeDialog() {
@@ -1375,18 +1620,22 @@ public class NoteEditorActivity extends AppCompatActivity {
     }
 
     private void startSpeechToText() {
-        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            Toast.makeText(this, "Speech recognition is not available on this device", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_REQUEST_RECORD_AUDIO);
             return;
         }
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault().toString());
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now...");
         try {
             startActivityForResult(intent, SPEECH_REQUEST_CODE);
         } catch (Exception e) {
-            Toast.makeText(this, "Speech recognition not available on this device", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Could not start speech recognition: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1405,7 +1654,7 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SPEECH_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == SPEECH_REQUEST_CODE && data != null) {
             ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (results != null && !results.isEmpty()) {
                 String spokenText = results.get(0);

@@ -9,10 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +37,7 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity implements NoteAdapter.OnNoteClickListener {
 
     private DrawerLayout drawerLayout;
+    private NavigationView navView;
     private RecyclerView recyclerView;
     private NoteAdapter noteAdapter;
     private NoteDatabase db;
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.OnNot
     private SwitchCompat switchAutoBackup;
     private AppLockManager appLockManager;
     private SwitchCompat switchAppLock;
+    private final SparseArray<String> originalDrawerTitles = new SparseArray<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.OnNot
         recyclerView = findViewById(R.id.notesRecyclerView);
         emptyStateText = findViewById(R.id.emptyStateText);
         FloatingActionButton fab = findViewById(R.id.fabAddNote);
-        NavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         ImageButton btnHamburger = findViewById(R.id.btnHamburger);
         ImageButton btnSearch = findViewById(R.id.btnSearch);
 
@@ -145,6 +153,13 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.OnNot
 
         backupManager = new BackupManager(this);
         appLockManager = new AppLockManager(this);
+
+        // Store original drawer titles once, then apply crowns for free users
+        for (int i = 0; i < navView.getMenu().size(); i++) {
+            MenuItem mi = navView.getMenu().getItem(i);
+            originalDrawerTitles.put(mi.getItemId(), mi.getTitle().toString());
+        }
+        applyDrawerCrowns();
 
         // Wire up the app lock switch
         switchAppLock = (SwitchCompat) navView.getMenu()
@@ -255,6 +270,33 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.OnNot
         }
         loadNotes();
         triggerAutoBackupIfNeeded();
+        applyDrawerCrowns();
+    }
+
+    private void applyDrawerCrowns() {
+        if (navView == null || originalDrawerTitles.size() == 0) return;
+        for (int i = 0; i < navView.getMenu().size(); i++) {
+            MenuItem mi = navView.getMenu().getItem(i);
+            String base = originalDrawerTitles.get(mi.getItemId());
+            if (base == null) base = mi.getTitle().toString();
+            if (!CheckPremiumStatus.isPremium) {
+                mi.setTitle(buildCrownTitle(base));
+            } else {
+                mi.setTitle(base);
+            }
+        }
+    }
+
+    private CharSequence buildCrownTitle(String title) {
+        Drawable crown = ContextCompat.getDrawable(this, R.drawable.ic_crown);
+        if (crown == null) return title;
+        int size = (int) (getResources().getDisplayMetrics().density * 16);
+        crown.setBounds(0, 0, size, size);
+        String full = title + "  \u00A0";
+        SpannableString ss = new SpannableString(full);
+        ss.setSpan(new ImageSpan(crown, ImageSpan.ALIGN_BASELINE),
+                full.length() - 1, full.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ss;
     }
 
     private void showUpgradeDialogAddNotes() {
